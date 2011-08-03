@@ -1910,20 +1910,14 @@ main(int argc, char **argv)
 		char pidpropname[PROPERTY_KEY_MAX];
 		char pidpropval[PROPERTY_VALUE_MAX];
 
-#ifndef USES_TI_MAC80211
 		if (optind != argc - 1) {
 			syslog(LOG_ERR, "Android requires an interface");
 			exit(EXIT_FAILURE);
 		}
-#endif
 
 		if (snprintf(pidpropname,
 			     sizeof(pidpropname),
-#ifdef USES_TI_MAC80211
-			     "dhcp.%s.pid", iface->name) >= PROPERTY_KEY_MAX)
-#else
 			     "dhcp.%s.pid", argv[optind]) >= PROPERTY_KEY_MAX)
-#endif
 			exit(EXIT_FAILURE);
 		property_get(pidpropname, pidpropval, NULL);
 		if (strlen(pidpropval) == 0)
@@ -2001,20 +1995,14 @@ main(int argc, char **argv)
 		if (set_cloexec(pidfd) == -1)
 			exit(EXIT_FAILURE);
 #ifdef ANDROID
-#ifndef USES_TI_MAC80211
 		if (optind != argc - 1) {
 			syslog(LOG_ERR, "Android requires an interface");
 			exit(EXIT_FAILURE);
 		}
-#endif
 
 		if (snprintf(pidpropname,
 			     sizeof(pidpropname),
-#ifdef USES_TI_MAC80211
-			     "dhcp.%s.pid", iface->name) >= PROPERTY_KEY_MAX)
-#else
 			     "dhcp.%s.pid", argv[optind]) >= PROPERTY_KEY_MAX)
-#endif
 			exit(EXIT_FAILURE);
 		if (snprintf(pidpropval, sizeof(pidpropval), "%d", getpid()) >= PROPERTY_VALUE_MAX)
 			exit(EXIT_FAILURE);
